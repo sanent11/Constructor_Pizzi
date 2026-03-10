@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36930.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constructor_Pizzi", "Constructor_Pizzi\Constructor_Pizzi.csproj", "{BB9D8F46-D084-447F-999C-B7B1B502BFCD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB9D8F46-D084-447F-999C-B7B1B502BFCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB9D8F46-D084-447F-999C-B7B1B502BFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB9D8F46-D084-447F-999C-B7B1B502BFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB9D8F46-D084-447F-999C-B7B1B502BFCD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {82BA9F90-78D7-4107-B0C1-4B283E57AECF}
+	EndGlobalSection
+EndGlobal
