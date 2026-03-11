@@ -1,43 +1,96 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
+class MenuItem
+{
+    private string _name;
+    private decimal _price;
+
+    public string Name
+    {
+        get { return _name; }
+        set { _name = value; }
+    }
+
+    public decimal Price
+    {
+        get { return _price; }
+        set { _price = value; }
+    }
+
+    public MenuItem(string name, decimal price)
+    {
+        _name = name;
+        _price = price;
+    }
+
+    public virtual string GetInfo()
+    {
+        return $"Название: {Name}; цена: {Price} р.";
+    }
+}
+
+class PizzaBases : MenuItem
+
+{
+    public PizzaBases(string name, decimal price) : base(name, price) { }
+
+    public override string GetInfo()
+    {
+        return $"Название: {Name}; цена: {Price} р.";
+    }
+}
+
+class PizzaIngredient : MenuItem
+{
+    public PizzaIngredient(string name, decimal price) : base(name, price) { }
+
+    public override string GetInfo()
+    {
+        return $"Название: {Name}; цена: {Price} р.";
+    }
+}
 
 class Pizza
 {
-    public string Name;
-    public string Basis;
-    public List<string> Ingridients;
-    public decimal Price;
+    private string _name;
+    private string _basis;
+    private List<string> _ingridients;
+    private decimal _price;
 
+    public string Name
+    {
+        get { return _name; }
+        set { _name = value; }
+    }
+    public string Basis
+    {
+        get { return _basis; }
+        set { _basis = value; }
+    }
+    public List<string> Ingridients
+    {
+        get { return _ingridients; }
+        set { _ingridients = value; }
+    }
+    public decimal Price
+    {
+        get { return _price; }
+        set { _price = value; }
+    }
+    
     public Pizza(string name, string basis, List<string> ingridients, decimal price)
     {
-        this.Name = name;
-        this.Basis = basis;
-        this.Ingridients = ingridients;
-        this.Price = price;
+        _name = name;
+        _basis = basis;
+        _ingridients = ingridients;
+        _price = price;
     }
-}
 
-class PizzaBases
-
-{
-    public string Name;
-    public decimal Price;
-    
-    public PizzaBases(string name, decimal price)
+    public virtual string GetInfo()
     {
-        this.Name = name;
-        this.Price = price;
-    }
-}
-
-class PizzaIngredient
-{
-    public string Name;
-    public decimal Price;
-
-    public PizzaIngredient(string name, decimal price)
-    {
-        this.Name = name;
-        this.Price = price;
+        return $"Название: {Name}; Основа: {Basis}; Ингредиенты: {string.Join(", ", Ingridients)}; Цена: {Price} р.";
     }
 }
 
@@ -76,7 +129,7 @@ class Program
         else
             foreach (Pizza pizza in pizzas)
             {
-                Console.WriteLine($"Название: {pizza.Name}; Основа: {pizza.Basis}; Ингредиенты: {String.Join(", ", pizza.Ingridients)}; Цена: {pizza.Price} р.");
+                Console.WriteLine(pizza.GetInfo());
             }
         Console.WriteLine("\n================");
         Console.WriteLine("1 - Создать пиццу");
@@ -100,25 +153,32 @@ class Program
             Console.WriteLine("==========");
             Console.Write("Выберите основу: ");
 
-            PizzaBases pizza_base = null;
+            PizzaBases pizza_base = null; bool find = false;
             string pizza_base_name = Console.ReadLine();
             foreach (PizzaBases bases in pizza_bases)
             {
                 if (bases.Name == pizza_base_name)
                 {
-                    pizza_base = bases; 
+                    pizza_base = bases;
+                    find = true;
                     break;
                 }
             }
+            if (find == false)
+            {
+                Console.WriteLine("Основа не найдена!");
+                return;
+            }
+                
 
             Console.WriteLine("==========");
             foreach (PizzaIngredient ingr in pizza_ingredients)
             {
-                Console.WriteLine($"Название: {ingr.Name}, цена: {ingr.Price} р.");
+                Console.WriteLine(ingr.GetInfo());
             }
             Console.WriteLine("==========");
 
-            bool ingr_choice = false;
+            bool ingr_choice = false; find = false;
 
             List <PizzaIngredient> ingredient = new List<PizzaIngredient>();
             List <string> ingredient_names = new List<string>();
@@ -130,11 +190,22 @@ class Program
                 else
                 {
                     foreach (PizzaIngredient ingredients in pizza_ingredients)
+                    {
                         if (ingredients.Name == pizza_ingredient_name)
                         {
                             ingredient.Add(ingredients);
                             ingredient_names.Add(pizza_ingredient_name);
+                            find = true;
                         }
+                    }
+                    if (find == false)
+                    {
+                        Console.WriteLine("Ингредиент не найден!");
+                        return;
+                    }
+                        
+
+
                 }
                                                                 
             }
@@ -180,7 +251,7 @@ class Program
                 bool flag = false; decimal old_base_price = 0; decimal new_base_price = 0;
                 foreach (PizzaBases pizza_base in pizza_bases)
                 {
-                    Console.WriteLine($"Название: {pizza_base.Name}, цена: {pizza_base.Price} р.");
+                    Console.WriteLine(pizza_base.GetInfo());
                     foreach (Pizza pizza in pizzas)
                     {
                         if (pizza.Basis == pizza_base.Name && pizza_name == pizza.Name) old_base_price += pizza_base.Price;
@@ -218,7 +289,7 @@ class Program
                 decimal old_ingredients_price = 0;
                 foreach (PizzaIngredient ingredient in pizza_ingredients)
                 {
-                    Console.WriteLine($"Название: {ingredient.Name}, цена: {ingredient.Price} р.");
+                    Console.WriteLine(ingredient.GetInfo());
                     foreach (Pizza pizza in pizzas)
                     {
                         if (pizza.Name == pizza_name)
@@ -308,7 +379,7 @@ class Program
         else
             foreach (PizzaBases pizza_base in pizza_bases)
             {
-                Console.WriteLine($"Название: {pizza_base.Name}, цена: {pizza_base.Price} р.");
+                Console.WriteLine(pizza_base.GetInfo());
             }
         Console.WriteLine("\n================");
         Console.WriteLine("1 - Создать основу");
@@ -321,21 +392,61 @@ class Program
         {
             Console.WriteLine("================ СОЗДАНИЕ ОСНОВЫ ================\n");
             Console.Write("Введите название основы: ");
+            bool classical_base = false; 
             string base_name = Console.ReadLine();
-            if (CheckBase(base_name) == false)
+            bool isClassical = base_name.ToLower() == "классическая" || base_name.ToLower() == "классическое";
+            
+            foreach (PizzaBases bases in pizza_bases)
             {
-                Console.WriteLine("Такая основа уже существует!");
+                string name = bases.Name.ToLower();
+                if (name == "классическая" || name == "классическое")
+                {
+                    classical_base = true;
+                    break;
+                }              
+  
+            }
+
+            if (classical_base == false && isClassical == false)
+            {
+                Console.WriteLine("Сначала создайте классическую основу!");
             }
             else
             {
-                Console.Write("Введите цену основы: ");
-                decimal base_price = decimal.Parse(Console.ReadLine());
+                if (CheckBase(base_name) == false)
+                {
+                    Console.WriteLine("Такая основа уже существует!");
+                }
+                else
+                {
+                    Console.Write("Введите цену основы: ");
+                    decimal base_price = decimal.Parse(Console.ReadLine());
+                    if (isClassical == false)
+                    {
+                        PizzaBases classicalBase = null;
+                        foreach (PizzaBases bases in pizza_bases)
+                        {
+                            string name = bases.Name.ToLower();
+                            if (name == "классическая" || name == "классическое")
+                            {
+                                classicalBase = bases;
+                                break;
+                            }
+                        }
 
-                PizzaBases base_pizza = new PizzaBases(base_name, base_price);
-                pizza_bases.Add(base_pizza);
-                Console.WriteLine("Основа успешно создана!");
-            }    
-         
+                        decimal max_price = classicalBase.Price * 1.20m;
+                        if (base_price > max_price)
+                        {
+                            Console.WriteLine($"Цена основы не может превышать 20% от классической! Максимум: {max_price} р.");
+                            return;
+                        }
+                    }
+
+                    PizzaBases base_pizza = new PizzaBases(base_name, base_price);
+                    pizza_bases.Add(base_pizza);
+                    Console.WriteLine("Основа успешно создана!");
+                }
+            }
         }
 
         if (user == "2")
@@ -405,7 +516,7 @@ class Program
         else
             foreach (PizzaIngredient ingredient in pizza_ingredients)
             {
-                Console.WriteLine($"Название: {ingredient.Name}, цена: {ingredient.Price} р.");
+                Console.WriteLine(ingredient.GetInfo());
             }
         Console.WriteLine("\n================");
         Console.WriteLine("1 - Создать ингредиент");
